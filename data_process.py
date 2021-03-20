@@ -1,7 +1,7 @@
 import os
 
 file_path = "logfile_2020_03_19_09_31_56.txt"
-Name_list = ['ACCE','GYRO','MAGN','PRES','AHRS']
+Name_list = ['PRES','ACCE','GYRO','MAGN','AHRS']
 SensorTimestamp = float(1470242.430)
 SensorTimestamp1 = float(1470222.644)
 list_WIFI = []
@@ -52,18 +52,44 @@ def GNSS():
     with open(file_path, 'r') as f:
         for lines in f.readlines():
             if '%' in lines:
+                first =True
                 continue
             else:
                 line_list = lines.strip('\n').split(';')
+                if first:
+                    num = float(line_list[1])
+                    first = False
                 if str(line_list[0]) == 'GNSS':
+                    line_list[1] = float(line_list[1])-num
+                    #print(line_list[1])
                     list_GNSS.append(line_list)
     with open("GNSS.txt", 'w') as f:
         for line_gnss in list_GNSS:
             f.write(str(line_gnss))
             f.write('\n')
     f.close()
+    print("Successful")
 
-#def IMU():
+# def IMU():
+#     i = 0
+#     with open(file_path, 'r') as f:
+#         for lines in f.readlines():
+#             if '%' in lines:
+#                 continue
+#             else:
+#                 line_list = lines.strip('\n').split(';')
+#                 name_list = []
+#                 if line_list[0] ==Name_list[0]:
+#                     i = i+1
+#                 if i % 2 != 0:
+#                     name_list.append(line_list)
+#                 else:
+
+
+
+
+
+
 
 
 
@@ -84,8 +110,5 @@ if __name__ == "__main__":
     print(min_WIFi)
     WIFI(min_WIFi)
     GNSS()
-
-
-
 
 
